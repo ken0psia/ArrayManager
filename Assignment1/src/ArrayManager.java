@@ -1,6 +1,7 @@
 //Angel Baldovinos - COMP-SCI 303 - Assignment 1 - February 13, 2026
 import java.io.File;
 import java.io.PrintWriter;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 //ASSIGNMENT 1 TO-DO LIST
@@ -24,7 +25,7 @@ public class ArrayManager {
     //Parses and reads all elements from the input file
     public Integer[] readFile() throws Exception {
         //Scans Input File
-        Scanner input = new Scanner(new File("/Assignment1/A1input.txt"));
+        Scanner input = new Scanner(new File("Assignment1/bin/A1input.txt"));
         //Create big-ish array to hold starting numbers 
         Integer[] numbers = new Integer[100];
         //read until end of file
@@ -42,7 +43,7 @@ public class ArrayManager {
     //Writes all elements to an output file with the same formatting as the input file.
     //Needs array of integers
     public void writeFile(Integer[] numbers) throws Exception {
-        File textFile = new File("/Assignment1/output.txt");
+        File textFile = new File("Assignment1/bin/output.txt");
         //if it doesnt exist, create it
         if (!textFile.exists()) {
             textFile.createNewFile();
@@ -81,8 +82,7 @@ public class ArrayManager {
 
     //modifies a value at a specific index, includes try/catch
     public static boolean modifyValues(Integer[] numbers, int index, int newValue) {
-        try
-        { 
+        try { 
             if (index >= 0 && index < arrLength.length && numbers[index] != null)
             numbers[index] = newValue;
             return true;
@@ -141,8 +141,6 @@ public class ArrayManager {
         ArrayManager app = new ArrayManager();
         Integer[] numbers = app.readFile();
         System.out.print("\n\n\nWelcome to the Array Manager, Please enter an integer (0-4)\n\n");
-        System.out.print("1. Check if a VALUE exists in array\n2. Modify a value in the array");
-        System.out.print("\n3. Append a value to the array\n4. Delete an value (w/ index) from the array\n0. Exit\n");
         
         //gets user input anytime it is called
         Scanner choice = new Scanner(System.in);
@@ -151,7 +149,9 @@ public class ArrayManager {
         //choices are split within their respective cases.
         boolean running = true;
         while (running) {
-            System.out.print("Enter your choice: ");
+            System.out.print("\n1. Check if a VALUE exists in array\n2. Modify a value in the array");
+            System.out.print("\n3. Append a value to the array\n4. Delete an value (w/ index) from the array\n0. Exit\n");
+            System.out.print("Enter your choice (0-4): ");
             switch (choice.nextInt()) { //i love switches.
                 case 0:
                     System.out.println("Exiting...");
@@ -160,36 +160,62 @@ public class ArrayManager {
                 case 1:
                     //check if value exists
                     System.out.print("\nEnter value to check: ");
-                    System.out.println("\nValue found at index: " + app.checkValue(numbers, choice.nextInt()));
+                    int check = choice.nextInt();
+                    if (app.checkValue(numbers, check) == -1) {
+                        System.out.println("Value not found in array.");
+                    }
+                    else {
+                        System.out.println("\nValue found at index: " + app.checkValue(numbers, check));
+                    }
                     break;
                 case 2:
-                    //modify a value, handles inva
-                    System.out.print("\nEnter index to modify: ");
-                    int index = choice.nextInt();
-                    System.out.print("\nEnter new value: ");
-                    int newValue = choice.nextInt();
-                    Boolean modded = modifyValues(numbers, index, newValue);
+                    //modify a value, handles invalid inputs
+                    try {
+                        System.out.print("\nEnter index to modify: ");
+                        int index = choice.nextInt();
+                        int old = numbers[index];
+                        System.out.print("\nEnter new value: ");
+                        int newValue = choice.nextInt();
+                        Boolean modded = modifyValues(numbers, index, newValue);
 
-                    //display result
-                    if (modded) {
-                        System.out.println("Value modified successfully.");
-                    } else {
-                        System.out.println("Failed to modify value.");
+                        //display result
+                        if (modded) {
+                            System.out.println("Value modified from " + old + " to " + newValue);
+                        } else {
+                            System.out.println("Failed to modify value.");
+                        }
+                    } catch (InputMismatchException e) {
+                        System.out.println("Invalid input. Please enter an integer.");
+                        choice.next(); 
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        System.out.println("Invalid index. Please enter a valid index.");
                     }
                     break;
                 case 3:
                     //append a value
-                    System.out.print("\nEnter value to append: ");
-                    int append = choice.nextInt();
-                    numbers = appendValue(numbers, append);
-                    System.out.println("Value appended successfully.");
+                    try {
+                        System.out.print("\nEnter value to append: ");
+                        int append = choice.nextInt();
+                        numbers = appendValue(numbers, append);
+                        System.out.println("Value appended.");
+                    } catch (InputMismatchException e) {
+                        System.out.println("Invalid input. Please enter an integer.");
+                        choice.next();
+                    }
                     break;
                 case 4:
                     //delete a value
-                    System.out.print("\nEnter index to delete: ");
-                    int deleteIndex = choice.nextInt();
-                    deleteValue(numbers, deleteIndex);
-                    System.out.println("Value deleted successfully.");
+                    try {
+                        System.out.print("\nEnter index to delete: ");
+                        int deleteIndex = choice.nextInt();
+                        deleteValue(numbers, deleteIndex);
+                        System.out.println("Value deleted.");
+                    } catch (InputMismatchException e) {
+                        System.out.println("Invalid input. Please enter an integer.");
+                        choice.next();
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        System.out.println("Invalid index. Please enter a valid index.");
+                    }
                     break;
                 default:
                     //invalid input, returns to main screen
