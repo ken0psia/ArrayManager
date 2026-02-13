@@ -17,6 +17,7 @@ On the main menu upon launch, if the user types 1 into the console, the console 
 !["inbounds1"](/Assignment1/images/inbounds1.png)
 
 If it is out of bounds, it will return that it was not found and the main menu screen will appear.
+
 !["oob1"](/Assignment1/images/outofbounds1.png)
 
 
@@ -25,7 +26,9 @@ In the main menu, if the user types 2, the console will prompt the user for an i
 
 If there is any error, there is an exception handler that will print to the user that the modification failed and will return them to the main menu, if they want to try again.
 !["task2"](/Assignment1/images/2all.png)
+
 Modified index 33 to be 999.
+
 !["task2out"](/Assignment1/images/2out.png)
 
 ## Task 3: Add an integer to the end of the array.
@@ -35,7 +38,9 @@ The default array size is 100. There are 100 elements by default. As seen in Tas
 
 The image below shows the expanded array size after just appending an element. An abstract variable (primitive in abstract) was made as the array size variable to get access across all methods and viewable to the class. Meaning the array size doubles if there is no room. 
 !["task3"](/Assignment1/images/task3.png)
+
 These commands appended 700 & 800 to the end.
+
 !["task3out"](/Assignment1/images/3out.png)
 
 
@@ -47,6 +52,8 @@ It will delete nothing & return to main menu selection if the given index is inv
 
 The removed element then becomes free for the "new" element to the right to move in and after it has moved, the "new" element's old index will be changed to null for the element to the right of it to move into that index and so on.
 !["task4out](/Assignment1/images/4out.png)
+
+Typing 0 in the main menu exits the program and saves all changes to output.txt until the program is called again.
 
 # END OF REPORT - DEFAULT README CONTINUES
 ## Folder Structure
